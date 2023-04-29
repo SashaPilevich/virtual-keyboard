@@ -1,0 +1,85 @@
+body {
+  font-size: 18px;
+  font-family: Arial, Helvetica, sans-serif;
+  font-weight: 400;
+  color: black;
+}
+
+.main-container {
+  display: flex;
+  flex-direction: column;
+}
+
+.title {
+  font-size: 24px;
+  font-weight: 500;
+  margin-bottom: 40px;
+  text-align: center;
+}
+
+.hot-keys-information {
+  font-size: 20px;
+  margin-bottom: 40px;
+  text-align: center;
+}
+
+.textarea-keyboard {
+  width: 980px;
+  margin: 0 auto 40px;
+}
+
+.keyboard-container {
+  margin: 0 auto;
+}
+.keyboard-row {
+  display: flex;
+  margin-bottom: 6px;
+}
+
+button {
+  border: none;
+  outline: none;
+  background: transparent;
+}
+
+.keyboard-btn {
+  position: relative;
+  top: 0;
+  width: 60px;
+  height: 60px;
+  background: rgba(18, 18, 22, 68%);
+  font-size: 18px;
+  color: white;
+  box-shadow: 0px 3px 0px rgba(49, 49, 50, 0.68);
+  border-radius: 5px;
+  margin: 2px;
+  cursor: pointer;
+  transition: all 0.4s ease-in-out;
+}
+
+.keyboard-btn:hover {
+  background: goldenrod;
+  color: black;
+}
+
+.keyboard-btn:active {
+  box-shadow: 0px 0px 0px rgba(49, 49, 50, 0.68);
+  top: 3px;
+}
+
+.keyboard-btn.keyboard-btn-xs-large,
+.keyboard-btn.keyboard-btn-xxs-large {
+  width: 80px;
+}
+.keyboard-btn.keyboard-btn-s-large {
+  width: 144px;
+}
+.keyboard-btn.keyboard-btn-m-large {
+  width: 134px;
+}
+.keyboard-btn.keyboard-btn-l-large {
+  width: 134px;
+}
+.keyboard-btn.keyboard-btn-xl-large {
+  width: 487px;
+}

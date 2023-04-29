@@ -359,10 +359,15 @@ export const keyboardData = [
     {
       code: "Space",
       state: true,
-      lang: { en: " ", ru: " " },
+      lang: { en: "", ru: "" },
       size:"xl-large",
     },
-
+    {
+      code: "ControlRight",
+      state: true,
+      lang: { en: "Ctrl", ru: "Ctrl" },
+      size:"xxs-large",
+    },
     {
       code: "ArrowLeft",
       state: true,
@@ -381,11 +386,6 @@ export const keyboardData = [
       lang: { en: "⯈", ru: "⯈" },
       size:"middle",
     },
-    {
-      code: "ControlRight",
-      state: true,
-      lang: { en: "Ctrl", ru: "Ctrl" },
-      size:"middle",
-    },
+    
   ]
 ]
