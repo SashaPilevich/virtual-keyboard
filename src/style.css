@@ -62,9 +62,11 @@ button {
   color: black;
 }
 
-.keyboard-btn:active {
+.keyboard-btn.active {
   box-shadow: 0px 0px 0px rgba(49, 49, 50, 0.68);
   top: 3px;
+  background: goldenrod;
+  color: black;
 }
 
 .keyboard-btn.keyboard-btn-xs-large,
