@@ -32,7 +32,7 @@ export class Keyboard {
     }
     initKeyboardPage(this.textarea, keyboardFragment);
     this._clickPhysicalKey();
-    this._changeLanguage();
+    this._changeLanguage(this.lang);
   }
 
   _clickPhysicalKey() {
@@ -118,7 +118,12 @@ export class Keyboard {
       }
     });
   }
-  _changeLanguage(){}
+  _changeLanguage(lang){
+    Array.from(keyboardFragment.querySelectorAll(".keyboard-btn")) .forEach((element) => {
+      element.textContent = keyboardObj[element.id][lang];
+    });
+
+  }
   _clickWithShift(shiftKey) {}
   _clickOnArrow(){}
 }
