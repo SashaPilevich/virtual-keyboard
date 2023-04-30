@@ -34,11 +34,13 @@ export class Keyboard {
     }
     initKeyboardPage(this.textarea, keyboardFragment);
     this.clickPhysicalKey();
+    this.clickVirtualKey();
     this.changeLanguage(this.lang);
   }
 
   clickPhysicalKey() {
     document.addEventListener("keydown", (event) => {
+      this.textarea.blur()
       event.stopImmediatePropagation();
       const key = document.getElementById(event.code);
       if (!key) {
@@ -57,29 +59,13 @@ export class Keyboard {
         key.classList.add("active");
         if (event.code === "Backspace") {
           event.preventDefault();
-          const pointForStart = Math.max(0, this.textarea.selectionStart - 1);
-          this.textarea.value =
-            this.textarea.value.slice(0, pointForStart) +
-            this.textarea.value.slice(this.textarea.selectionEnd);
-          this.textarea.selectionStart = pointForStart;
-          this.textarea.selectionEnd = this.textarea.selectionStart;
+          this.clickOnBackspace();
         } else if (event.code === "Tab") {
           event.preventDefault();
-          this.textarea.value = `${this.textarea.value.slice(
-            0,
-            this.textarea.selectionStart
-          )}\t${this.textarea.value.slice(this.textarea.selectionEnd)}`;
-          this.textarea.selectionStart += "\t".length;
-          this.textarea.selectionEnd = this.textarea.selectionStart;
+          this.clickOnTab();
         } else if (event.code === "Delete") {
           event.preventDefault();
-          const pointForEnd = this.textarea.selectionEnd;
-          if (pointForEnd < this.textarea.value.length) {
-            const arrayOfValue = this.textarea.value.split("");
-            arrayOfValue.splice(pointForEnd, 1);
-            this.textarea.value = arrayOfValue.join("");
-            this.textarea.selectionEnd = pointForEnd;
-          }
+          this.clickOnDelete();
         } else if (event.code === "Enter") {
           event.preventDefault();
           this.textarea.value += "\n";
@@ -113,6 +99,7 @@ export class Keyboard {
 
     document.addEventListener("keyup", (event) => {
       event.stopImmediatePropagation();
+      this.textarea.focus()
       const key = document.getElementById(event.code);
       if (event.code !== "CapsLock") {
         key.classList.remove("active");
@@ -123,7 +110,66 @@ export class Keyboard {
       }
     });
   }
-
+  clickVirtualKey() {
+    Array.from(keyboardFragment.querySelectorAll(".keyboard-btn")).forEach(
+      (element) => {
+        this.textarea.focus();
+        element.addEventListener("mousedown", (event) => {
+          element.classList.add("active");
+          if (!keyboardObj[element.id].state) {
+            this.textarea.value += element.textContent;
+          } else if (element.id === "Backspace") {
+            event.preventDefault();
+            this.clickOnBackspace();
+          } else if (element.id === "Delete") {
+            event.preventDefault();
+            this.clickOnDelete();
+          } else if (element.id === "Tab") {
+            event.preventDefault();
+            this.clickOnTab();
+          } else if (element.id === "Enter") {
+            event.preventDefault();
+            this.textarea.value += "\n";
+          } else if (element.id === "Space") {
+            event.preventDefault();
+            this.textarea.value += " ";
+          } else if (
+            (element.id === "ShiftLeft" || element.id === "ShiftRight") &&
+            !event.repeat
+          ) {
+            event.preventDefault();
+            this.clickWithShift(event.shiftKey);
+          } else if (
+            element.id === "ArrowUp" ||
+            element.id === "ArrowDown" ||
+            element.id === "ArrowLeft" ||
+            element.id === "ArrowRight"
+          ) {
+            event.preventDefault();
+            this.clickOnArrow();
+          } else if (element.id === "CapsLock" && !event.repeat) {
+            this.capsLock = !this.capsLock;
+            if (this.capsLock) {
+              element.classList.add("active");
+            } else {
+              element.classList.remove("active");
+            }
+            this.clickWithShift(event.shiftKey);
+          }
+        });
+        element.addEventListener('mouseup',(event)=>{
+          this.textarea.focus();
+          if (element.id !== "CapsLock") {
+            element.classList.remove("active");
+            if (element.id === "ShiftRight" || element.id === "ShiftLeft") {
+              event.preventDefault();
+              this.clickWithShift(event.shiftKey);
+            }
+          }
+        })
+      }
+    );
+  }
   changeLanguage(lang) {
     Array.from(keyboardFragment.querySelectorAll(".keyboard-btn")).forEach(
       (element) => {
@@ -244,6 +290,30 @@ export class Keyboard {
       }
     );
   }
-
+  clickOnBackspace() {
+    const pointForStart = Math.max(0, this.textarea.selectionStart - 1);
+    this.textarea.value =
+      this.textarea.value.slice(0, pointForStart) +
+      this.textarea.value.slice(this.textarea.selectionEnd);
+    this.textarea.selectionStart = pointForStart;
+    this.textarea.selectionEnd = this.textarea.selectionStart;
+  }
+  clickOnDelete() {
+    const pointForEnd = this.textarea.selectionEnd;
+    if (pointForEnd < this.textarea.value.length) {
+      const arrayOfValue = this.textarea.value.split("");
+      arrayOfValue.splice(pointForEnd, 1);
+      this.textarea.value = arrayOfValue.join("");
+      this.textarea.selectionEnd = pointForEnd;
+    }
+  }
+  clickOnTab() {
+    this.textarea.value = `${this.textarea.value.slice(
+      0,
+      this.textarea.selectionStart
+    )}\t${this.textarea.value.slice(this.textarea.selectionEnd)}`;
+    this.textarea.selectionStart += "\t".length;
+    this.textarea.selectionEnd = this.textarea.selectionStart;
+  }
   clickOnArrow() {}
 }
