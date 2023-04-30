@@ -3,7 +3,7 @@ module.exports = {
         browser: true,
         es6: true,
     },
-    extends: ["airbnb-base","prettier"],
+    extends: ["airbnb-base"],
     overrides: [
     ],
     parserOptions: {
