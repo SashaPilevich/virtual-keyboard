@@ -140,7 +140,7 @@ export class Keyboard {
             && !event.repeat
           ) {
             event.preventDefault();
-            this.clickWithShift(event.shiftKey);
+            this.clickWithShift(true);
           } else if (
             element.id === 'ArrowUp'
             || element.id === 'ArrowDown'
@@ -378,3 +378,5 @@ export class Keyboard {
     this.textarea.setSelectionRange(cursorPosition, cursorPosition);
   }
 }
+
+// export default Keyboard;
