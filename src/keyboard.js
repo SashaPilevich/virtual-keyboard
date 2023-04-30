@@ -378,5 +378,3 @@ export class Keyboard {
     this.textarea.setSelectionRange(cursorPosition, cursorPosition);
   }
 }
-
-// export default Keyboard;

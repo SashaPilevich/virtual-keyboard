@@ -10,5 +10,3 @@ export const initKeyboardPage = (textarea, keyboard) => {
   mainContainer.append(title, hotKeysInformation, textarea, keyboard);
   document.body.append(mainContainer);
 };
-
-// export default initKeyboardPage;
