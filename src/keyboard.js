@@ -1,5 +1,4 @@
 import { keyboardData } from './keyboardData.js';
-
 import { initKeyboardPage } from './keyboardPage.js';
 /* eslint-disable no-param-reassign */
 const keyboardObj = {};
@@ -55,6 +54,8 @@ export class Keyboard {
           key.classList.remove('active');
         }
         this.clickWithShift(event.shiftKey);
+      } else if (event.metaKey) {
+        key.classList.add('active');
       } else {
         key.classList.add('active');
         if (event.code === 'Backspace') {
@@ -68,10 +69,10 @@ export class Keyboard {
           this.clickOnDelete();
         } else if (event.code === 'Enter') {
           event.preventDefault();
-          this.textarea.value += '\n';
+          this.clickOnEnter();
         } else if (event.code === 'Space') {
           event.preventDefault();
-          this.textarea.value += ' ';
+          this.clickOnSpace();
         } else if (event.altKey && event.shiftKey && !event.repeat) {
           event.preventDefault();
           this.lang = this.lang === 'ru' ? 'en' : 'ru';
@@ -90,9 +91,9 @@ export class Keyboard {
           || event.code === 'ArrowRight'
         ) {
           event.preventDefault();
-          this.clickOnArrow();
+          this.clickOnArrow(event.code);
         } else if (!keyboardObj[event.code].state) {
-          this.textarea.value += key.textContent;
+          this.printLetter(key.textContent);
         }
       }
     });
@@ -118,7 +119,7 @@ export class Keyboard {
         element.addEventListener('mousedown', (event) => {
           element.classList.add('active');
           if (!keyboardObj[element.id].state) {
-            this.textarea.value += element.textContent;
+            this.printLetter(element.textContent);
           } else if (element.id === 'Backspace') {
             event.preventDefault();
             this.clickOnBackspace();
@@ -130,10 +131,10 @@ export class Keyboard {
             this.clickOnTab();
           } else if (element.id === 'Enter') {
             event.preventDefault();
-            this.textarea.value += '\n';
+            this.clickOnEnter();
           } else if (element.id === 'Space') {
             event.preventDefault();
-            this.textarea.value += ' ';
+            this.clickOnSpace();
           } else if (
             (element.id === 'ShiftLeft' || element.id === 'ShiftRight')
             && !event.repeat
@@ -147,7 +148,7 @@ export class Keyboard {
             || element.id === 'ArrowRight'
           ) {
             event.preventDefault();
-            this.clickOnArrow();
+            this.clickOnArrow(element.id);
           } else if (element.id === 'CapsLock' && !event.repeat) {
             this.capsLock = !this.capsLock;
             if (this.capsLock) {
@@ -191,6 +192,7 @@ export class Keyboard {
               key.textContent = shiftKey ? '~' : '`';
             } else {
               key.textContent = shiftKey ? 'Ё' : 'ё';
+              key.textContent = this.capsLock ? 'Ё' : 'ё';
             }
           } else if (key.id === 'Digit1') {
             key.textContent = shiftKey ? '!' : '1';
@@ -247,36 +249,42 @@ export class Keyboard {
               key.textContent = shiftKey ? '}' : ']';
             } else {
               key.textContent = shiftKey ? 'Ъ' : 'ъ';
+              key.textContent = this.capsLock ? 'Ъ' : 'ъ';
             }
           } else if (key.id === 'BracketLeft') {
             if (this.lang === 'en') {
               key.textContent = shiftKey ? '{' : '[';
             } else {
               key.textContent = shiftKey ? 'Х' : 'х';
+              key.textContent = this.capsLock ? 'Х' : 'х';
             }
           } else if (key.id === 'Quote') {
             if (this.lang === 'en') {
               key.textContent = shiftKey ? '"' : "'";
             } else {
               key.textContent = shiftKey ? 'Э' : 'э';
+              key.textContent = this.capsLock ? 'Э' : 'э';
             }
           } else if (key.id === 'Semicolon') {
             if (this.lang === 'en') {
               key.textContent = shiftKey ? ':' : ';';
             } else {
               key.textContent = shiftKey ? 'Ж' : 'ж';
+              key.textContent = this.capsLock ? 'Ж' : 'ж';
             }
           } else if (key.id === 'Comma') {
             if (this.lang === 'en') {
               key.textContent = shiftKey ? '<' : ',';
             } else {
               key.textContent = shiftKey ? 'Б' : 'б';
+              key.textContent = this.capsLock ? 'Б' : 'б';
             }
           } else if (key.id === 'Period') {
             if (this.lang === 'en') {
               key.textContent = shiftKey ? '>' : '.';
             } else {
               key.textContent = shiftKey ? 'Ю' : 'ю';
+              key.textContent = this.capsLock ? 'Ю' : 'ю';
             }
           } else if (key.id === 'Slash') {
             if (this.lang === 'en') {
@@ -311,13 +319,62 @@ export class Keyboard {
   }
 
   clickOnTab() {
-    this.textarea.value = `${this.textarea.value.slice(
-      0,
-      this.textarea.selectionStart,
-    )}\t${this.textarea.value.slice(this.textarea.selectionEnd)}`;
-    this.textarea.selectionStart += '\t'.length;
-    this.textarea.selectionEnd = this.textarea.selectionStart;
+    let cursorPosition = this.textarea.selectionStart;
+    const leftValue = this.textarea.value.slice(0, cursorPosition);
+    const rightValue = this.textarea.value.slice(cursorPosition);
+    this.textarea.value = `${leftValue}\t${rightValue}`;
+    cursorPosition += 1;
+    this.textarea.setSelectionRange(cursorPosition, cursorPosition);
   }
 
-  clickOnArrow() {}
+  clickOnEnter() {
+    let cursorPosition = this.textarea.selectionStart;
+    const leftValue = this.textarea.value.slice(0, cursorPosition);
+    const rightValue = this.textarea.value.slice(cursorPosition);
+    this.textarea.value = `${leftValue}\n${rightValue}`;
+    cursorPosition += 1;
+    this.textarea.setSelectionRange(cursorPosition, cursorPosition);
+  }
+
+  clickOnSpace() {
+    let cursorPosition = this.textarea.selectionStart;
+    const leftValue = this.textarea.value.slice(0, cursorPosition);
+    const rightValue = this.textarea.value.slice(cursorPosition);
+    this.textarea.value = `${leftValue} ${rightValue}`;
+    cursorPosition += 1;
+    this.textarea.setSelectionRange(cursorPosition, cursorPosition);
+  }
+
+  clickOnArrow(element) {
+    let cursorPosition = this.textarea.selectionStart;
+    const leftValue = this.textarea.value.slice(0, cursorPosition);
+    const rightValue = this.textarea.value.slice(cursorPosition);
+    if (element === 'ArrowUp') {
+      if (leftValue.lastIndexOf('\n') === -1) {
+        cursorPosition = 0;
+      } else {
+        cursorPosition -= leftValue.slice(leftValue.lastIndexOf('\n')).length;
+      }
+    } else if (element === 'ArrowDown') {
+      if (rightValue.indexOf('\n') === -1) {
+        cursorPosition += rightValue.length;
+      } else {
+        cursorPosition += rightValue.indexOf('\n') + 1;
+      }
+    } else if (element === 'ArrowLeft') {
+      cursorPosition = (cursorPosition < 1) ? 0 : cursorPosition - 1;
+    } else if (element === 'ArrowRight') {
+      cursorPosition += 1;
+    }
+    this.textarea.setSelectionRange(cursorPosition, cursorPosition);
+  }
+
+  printLetter(element) {
+    let cursorPosition = this.textarea.selectionStart;
+    const leftValue = this.textarea.value.slice(0, cursorPosition);
+    const rightValue = this.textarea.value.slice(cursorPosition);
+    this.textarea.value = `${leftValue}${element}${rightValue}`;
+    cursorPosition += 1;
+    this.textarea.setSelectionRange(cursorPosition, cursorPosition);
+  }
 }
