@@ -12,23 +12,32 @@ body {
 
 .title {
   font-size: 24px;
-  font-weight: 500;
-  margin-bottom: 40px;
+  font-weight: 700;
+  margin-bottom: 20px;
   text-align: center;
+  color: rgba(49, 49, 50, 0.68);
+  text-transform: uppercase;
 }
 
 .hot-keys-information {
   font-size: 20px;
   margin-bottom: 40px;
   text-align: center;
+  color: rgba(49, 49, 50, 0.68);
+  text-transform: lowercase;
 }
 
 textarea:focus{
   outline: none;
 }
 .textarea-keyboard {
-  width: 980px;
+  width: 970px;
   margin: 0 auto 40px;
+  border: 2px solid goldenrod;
+  border-radius: 5px;
+  font-size: 18px;
+  font-family: Arial, Helvetica, sans-serif;
+  color: rgba(33, 33, 35, 0.68);
 }
 
 .keyboard-container {
@@ -62,14 +71,14 @@ button {
 
 .keyboard-btn:hover {
   background: goldenrod;
-  color: black;
+  color:rgba(49, 49, 50, 0.68);
 }
 
 .keyboard-btn.active {
   box-shadow: 0px 0px 0px rgba(49, 49, 50, 0.68);
   top: 3px;
   background: goldenrod;
-  color: black;
+  color:rgba(49, 49, 50, 0.68);
 }
 
 .keyboard-btn.keyboard-btn-xs-large,
@@ -86,5 +95,5 @@ button {
   width: 134px;
 }
 .keyboard-btn.keyboard-btn-xl-large {
-  width: 487px;
+  width: 424px;
 }

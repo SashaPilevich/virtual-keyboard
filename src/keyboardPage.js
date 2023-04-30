@@ -6,7 +6,7 @@ export const initKeyboardPage = (textarea, keyboard) => {
   title.textContent = 'Virtual Keyboard for Windows';
   const hotKeysInformation = document.createElement('p');
   hotKeysInformation.classList.add('hot-keys-information');
-  hotKeysInformation.textContent = 'Use Alt + Shift for change language.';
+  hotKeysInformation.textContent = '*Use Alt + Shift for change language.';
   mainContainer.append(title, hotKeysInformation, textarea, keyboard);
   document.body.append(mainContainer);
 };

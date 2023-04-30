@@ -363,6 +363,12 @@ export const keyboardData = [
       size: 'xl-large',
     },
     {
+      code: 'AltRight',
+      state: true,
+      lang: { en: 'Alt', ru: 'Alt' },
+      size: 'middle',
+    },
+    {
       code: 'ControlRight',
       state: true,
       lang: { en: 'Ctrl', ru: 'Ctrl' },
