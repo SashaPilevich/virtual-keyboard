@@ -1,4 +1,10 @@
 /node_modules
 /dist
+<<<<<<< HEAD
+/webpack.config.js
+# Local Netlify folder
+/.netlify
+=======
 /.netlify
 /webpack.config.js
+>>>>>>> gh-pages
